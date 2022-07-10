@@ -10,9 +10,29 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // define assosiation buyer and seller
+      transaction.belongsTo(models.user, {
+        as: "buyer",
+        foreignKey: {
+          name: "idBuyer",
+        },
+      });
+      transaction.belongsTo(models.user, {
+        as: "seller",
+        foreignKey: {
+          name: "idSeller",
+        },
+      });
+      transaction.belongsToMany(models.book, {
+        as: "books",
+        through: {
+          model: "booksPurcahased",
+          as: "bridge",
+        },
+        foreignKey: "idTransaction",
+      })
     }
-  };
+  }
   transaction.init({
     idBook: DataTypes.INTEGER,
     idBuyer: DataTypes.INTEGER,

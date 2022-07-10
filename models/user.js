@@ -10,9 +10,51 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // hasOne to Profile
+      user.hasOne(models.profile, {
+        as: "profile",
+        foreignKey: {
+          name: "idUser",
+        },
+      });
+
+      // hasMany to product model
+      user.hasMany(models.book, {
+        as: "books",
+        foreignKey: {
+          name: "idUser",
+        },
+      });
+
+      // hasMany assosiation to transaction model
+      user.hasMany(models.transaction, {
+        as: "buyerTransactions",
+        foreignKey: {
+          name: "idBuyer",
+        }
+      })
+      user.hasMany(models.transaction, {
+        as: "sellerTransactions",
+        foreignKey: {
+          name: "idSeller",
+        },
+      });
+
+      // hasMany assosiation to chat model
+      user.hasMany(models.chat, {
+        as:"senderMessage",
+        foreignKey: {
+          name: "idSender",
+        },
+      });
+      user.hasMany(models.chat,{
+        as: "recipientMessage",
+        foreignKey: {
+          name: "idRecipient",
+        },
+      });
     }
-  };
+  }
   user.init({
     email: DataTypes.STRING,
     password: DataTypes.STRING,
